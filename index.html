@@ -248,9 +248,10 @@
       // Spawn a fly-through logo inside the clicked card
       if(card){
         const fly=document.createElement('img');
-        fly.src = '/assets/lulle.png';
+        fly.src = 'https://lulle.dev/assets/lulle.png';
         fly.alt = 'Lulle Logo';
         fly.className = 'fly-logo';
+
 
         card.appendChild(fly);
         setTimeout(()=>fly.remove(), 900);
