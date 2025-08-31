@@ -4,379 +4,82 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Lulle · Learn Python</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#ffffff;
-      --fg:#0a0a0a;
-      --muted:#6b7280;
-      --line:#e5e7eb;
-      --surface:#f8fafc;
-      --radius:18px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; background:var(--bg); color:var(--fg);
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      line-height:1.6;
-    }
-    header{
-      display:flex; align-items:center; justify-content:center;
-      padding:28px 20px; border-bottom:1px solid var(--line);
-      background:var(--bg); position:sticky; top:0; z-index:10;
-      gap:12px;
-    }
-    header img{height:48px; width:auto; cursor:pointer}
-    .brand{font-weight:800; font-size:2rem; letter-spacing:0.35rem}
 
-    @keyframes logo-spin-y {
-      from { transform: rotateY(0deg); }
-      to { transform: rotateY(1440deg); }
-    }
-    .logo-spin { animation: logo-spin-y 1s ease-in-out; }
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;600;800&display=swap" rel="stylesheet">
 
-    /* Lesson cards */
-    .lessons{display:grid; gap:18px; padding:24px 20px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); border-bottom:1px solid var(--line)}
-    .lesson-card{border:1px solid var(--line); border-radius:16px; background:#fff; padding:24px; min-height:140px; cursor:pointer; transition:background .15s ease, transform .04s ease, border-color .15s ease} .lesson-card:hover{ background:var(--surface) } .lesson-card:active{ transform: translateY(1px) }
-    .lesson-card:hover{ background:var(--surface) }
-    .lesson-card:active{ transform: scale(0.98) }
-    .lesson-card .title{font-weight:800; font-size:1.25rem; margin-bottom:8px} 
-    .lesson-card .hint{color:var(--muted); font-size:1rem} 
 
-    /* Frames hidden by default */
-    .frame{ display:none; padding:32px; max-width:1200px; margin:0 auto }
-    .frame.active{ display:block }
+  <!-- Global styles (site) -->
+  <link rel="stylesheet" href="style.css">
 
-    .pane{ background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:24px; margin-bottom:28px }
-    .pane h2{ margin:0 0 12px; font-size:1.2rem; font-weight:600 }
-
-    textarea.code{ width:100%; height:420px; resize:vertical; padding:14px; background:#fff; color:var(--fg); font:14px/1.6 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New"; border:1px solid var(--line); border-radius:12px }
-    .console{ width:100%; min-height:420px; padding:14px; background:var(--surface); color:var(--fg); border:1px solid var(--line); border-radius:12px; white-space:pre-wrap; overflow:auto; font:14px/1.6 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New" }
-
-    .controls{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px }
-    .btn{ appearance:none; cursor:pointer; background:#fff; color:var(--fg); border:1px solid var(--line); border-radius:8px; padding:8px 14px; font-weight:600; font-size:.95rem }
-    .btn:hover{ background:var(--surface) }
-    .btn[disabled]{opacity:.5; cursor:not-allowed}
-
-    footer{ padding:20px; text-align:center; font-size:.9rem; color:var(--muted); border-top:1px solid var(--line) }
-      /* Lessons grid */
-    .lessons{display:grid; gap:18px; padding:24px 20px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); border-bottom:1px solid var(--line)}
-    .lesson-card{border:1px solid var(--line); border-radius:16px; background:#fff; padding:24px; min-height:160px; cursor:pointer; transition:background .15s ease, transform .04s ease, border-color .15s ease}
-    .lesson-card:hover{ background:var(--surface) }
-    .lesson-card:active{ transform: translateY(1px) }
-    .lesson-card .title{font-weight:800; font-size:1.25rem; margin-bottom:8px}
-    .lesson-card .hint{color:var(--muted); font-size:1rem}
-    /* Expanded card takes full row and hosts the pane */
-    .lesson-card.expanded{ grid-column: 1 / -1; padding:0; overflow:hidden }
-    .lesson-card.expanded .pane{ border:0; border-radius:0; margin:0; padding:24px }
-    @media (min-width:1100px){
-      .lesson-card.expanded .pane{ display:grid; grid-template-columns:1fr 1fr; gap:20px }
-      .lesson-card.expanded .pane h2{ grid-column:1 / -1 }
-    }
-    /* Frames are storage only (hidden) */
-    .frame{ display:none }
-      /* Lessons grid (flashcards) */
-    .lessons{display:grid; gap:24px; padding:28px 24px; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); border-bottom:1px solid var(--line)}
-    .lesson-card{position:relative; border:1px solid #cdd5df; border-radius:28px; background:#f6f7f8; padding:28px; min-height:220px; cursor:pointer; transition:transform .18s ease, box-shadow .18s ease}
-    .lesson-card:hover{ transform: translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,.06) }
-    .lesson-card:active{ transform: translateY(0) }
-    .lesson-card .title{font-weight:800; font-size:1.35rem; margin-bottom:8px; letter-spacing:.02em}
-    .lesson-card .hint{color:var(--muted); font-size:1rem}
-
-    /* Lesson view (separate page feel) */
-    .lesson-view{ display:none; padding:36px 24px; max-width:1200px; margin:0 auto }
-    .lesson-view.active{ display:grid }
-    @media (min-width:1100px){ .lesson-view{ grid-template-columns: 1fr 1fr; gap:24px } }
-    .lesson-view .left, .lesson-view .right{ background:#fff; border:1px solid var(--line); border-radius:16px; padding:18px }
-    .lesson-view h2{ grid-column:1 / -1; margin:0 0 12px; font-weight:700 }
-    .back-btn{ appearance:none; border:1px solid var(--line); background:#fff; border-radius:999px; padding:8px 14px; font-weight:600; cursor:pointer; margin:0 0 16px; }
-    .back-btn:hover{ background:var(--surface) }
-
-    /* Hide frames storage */
-    .frame{ display:none }
-
-    /* Editor / console sizes when in lesson-view */
-    .lesson-view textarea.code{ height:420px }
-    .lesson-view .console{ min-height:420px }
-
-    /* Fly-through logo animation inside card */
-    @keyframes flyUp{ from{ transform:translate(-50%, 60%) scale(.9); opacity:.0 } 50%{ opacity:1 } to{ transform:translate(-50%, -60%) scale(1); opacity:0 } }
-    .fly-logo{ position:absolute; left:50%; top:50%; transform:translate(-50%, 60%); width:56px; height:auto; pointer-events:none; animation: flyUp .8s ease-in forwards }
-  </style>
+  <!-- Logo (libellule) styles — chargé mais pas utilisé tant que tu n’ajoutes pas le markup -->
+  <link rel="stylesheet" href="libellule.css">
 </head>
 <body>
-  <header>
-    <img src="assets/Lulle.png" alt="Lulle Logo"/>
-    <div class="brand">L U L L E</div>
-  </header>
+<header>
+  <div class="libellule">
+    <div class="head"></div>
+    <div class="body"></div>
+    <div class="wing left top"></div>
+    <div class="wing left bottom"></div>
+    <div class="wing right top"></div>
+    <div class="wing right bottom"></div>
+  </div>
+  <div class="brand">L U L L E</div>
+</header>
+
+
   <section class="lessons">
-    <div class="lesson-card" data-tab="print">
+    <div class="lesson-card" data-id="print">
       <div class="title">print()</div>
       <div class="hint">Display text & variables</div>
     </div>
-    <div class="lesson-card" data-tab="ifelse">
+    <div class="lesson-card" data-id="ifelse">
       <div class="title">if / else</div>
       <div class="hint">Conditions & indentation</div>
     </div>
-    <div class="lesson-card" data-tab="loops">
+    <div class="lesson-card" data-id="loops">
       <div class="title">loops</div>
       <div class="hint">for & while basics</div>
     </div>
-    <div class="lesson-card" data-tab="lists">
+    <div class="lesson-card" data-id="lists">
       <div class="title">lists & dicts</div>
       <div class="hint">collections & key/value</div>
     </div>
-    <div class="lesson-card" data-tab="funcs">
+    <div class="lesson-card" data-id="funcs">
       <div class="title">functions</div>
       <div class="hint">def, params, return</div>
     </div>
   </section>
 
-  <!-- Lessons grid -->
-  
+  <footer>Lulle · Learn the basics of Python</footer>
 
-  <!-- Frames -->
-  <section id="frame-print" class="frame">
-    <div class="pane">
-      <h2>print()</h2>
-      <textarea id="editor-print" class="code"></textarea>
-      <div class="controls">
-        <button class="btn" id="run-print">Run ▶</button>
-        <button class="btn" id="reset-print">Reset</button>
-      </div>
-      <pre id="console-print" class="console"></pre>
-    </div>
-  </section>
-
-  <section id="frame-ifelse" class="frame">
-    <div class="pane">
-      <h2>if / else</h2>
-      <textarea id="editor-ifelse" class="code"></textarea>
-      <div class="controls">
-        <button class="btn" id="run-ifelse">Run ▶</button>
-        <button class="btn" id="reset-ifelse">Reset</button>
-      </div>
-      <pre id="console-ifelse" class="console"></pre>
-    </div>
-  </section>
-
-  <section id="frame-loops" class="frame">
-    <div class="pane">
-      <h2>loops</h2>
-      <textarea id="editor-loops" class="code"></textarea>
-      <div class="controls">
-        <button class="btn" id="run-loops">Run ▶</button>
-        <button class="btn" id="reset-loops">Reset</button>
-      </div>
-      <pre id="console-loops" class="console"></pre>
-    </div>
-  </section>
-
-  <section id="frame-lists" class="frame">
-    <div class="pane">
-      <h2>lists & dicts</h2>
-      <textarea id="editor-lists" class="code"></textarea>
-      <div class="controls">
-        <button class="btn" id="run-lists">Run ▶</button>
-        <button class="btn" id="reset-lists">Reset</button>
-      </div>
-      <pre id="console-lists" class="console"></pre>
-    </div>
-  </section>
-
-  <section id="frame-funcs" class="frame">
-    <div class="pane">
-      <h2>functions</h2>
-      <textarea id="editor-funcs" class="code"></textarea>
-      <div class="controls">
-        <button class="btn" id="run-funcs">Run ▶</button>
-        <button class="btn" id="reset-funcs">Reset</button>
-      </div>
-      <pre id="console-funcs" class="console"></pre>
-    </div>
-  </section>
-
-  <!-- Lesson detail view -->
-  <section id="lesson-view" class="lesson-view" aria-live="polite">
-    <div style="grid-column:1/-1; display:flex; justify-content:space-between; align-items:center; gap:12px">
-      <h2 id="lesson-title">&nbsp;</h2>
-      <button id="back-lessons" class="back-btn">Back to lessons</button>
-    </div>
-    <div class="left">
-      <h3 style="margin:0 0 8px; font-weight:600">Editor</h3>
-      <textarea id="active-editor" class="code"></textarea>
-      <div class="controls">
-        <button class="btn" id="active-run">Run ▶</button>
-        <button class="btn" id="active-reset">Reset</button>
-      </div>
-    </div>
-    <div class="right">
-      <h3 style="margin:0 0 8px; font-weight:600">Console</h3>
-      <pre id="active-console" class="console"></pre>
-    </div>
-  </section>
-
-  <footer>
-    Lulle · Learn the basics of Python
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js">    // ---------- LESSON ROUTER (cards -> separate view) ----------
-    const lessonsSection=document.querySelector('.lessons');
-    const lessonView=document.querySelector('#lesson-view');
-    const backBtn=document.querySelector('#back-lessons');
-    const titleEl=document.querySelector('#lesson-title');
-    const activeEditor=document.querySelector('#active-editor');
-    const activeConsole=document.querySelector('#active-console');
-    const activeRun=document.querySelector('#active-run');
-    const activeReset=document.querySelector('#active-reset');
-
-    let currentId=null; // print | ifelse | loops | lists | funcs
-
-    function openLesson(id, card){
-      currentId=id;
-      // Set title
-      const mapTitles={print:'print()', ifelse:'if / else', loops:'loops', lists:'lists & dicts', funcs:'functions'};
-      titleEl.textContent=mapTitles[id]||id;
-      // Seed editor/console
-      activeEditor.value=DEFAULTS[id]||'';
-      activeConsole.textContent='';
-      // Show view
-      lessonsSection.style.display='none';
-      lessonView.classList.add('active');
-      window.scrollTo({top:0, behavior:'smooth'});
-      // Spawn a fly-through logo inside the clicked card
-      if(card){
-        const fly=document.createElement('img');
-        fly.src = 'https://lulle.dev/assets/lulle.png';
-        fly.alt = 'Lulle Logo';
-        fly.className = 'fly-logo';
-
-
-        card.appendChild(fly);
-        setTimeout(()=>fly.remove(), 900);
-      }
-    }
-    function closeLesson(){
-      currentId=null;
-      lessonView.classList.remove('active');
-      lessonsSection.style.display='grid';
-      window.scrollTo({top:0, behavior:'smooth'});
-    }
-
-    document.querySelectorAll('.lesson-card').forEach(card=>{
-      card.addEventListener('click',()=> openLesson(card.dataset.tab, card));
-    });
-    backBtn.addEventListener('click', closeLesson);
-
-    // Active run/reset mirror the hidden per-frame behavior
-    activeRun.onclick=async()=>{
-      if(!currentId) return;
-      activeConsole.textContent='';
-      try{
-        pyodide.globals.set('user_code', activeEditor.value);
-        const result=await pyodide.runPythonAsync(`
-import sys,io,traceback
-out=io.StringIO();err=io.StringIO()
-_oldout,_olderr=sys.stdout,sys.stderr
-sys.stdout,sys.stderr=out,err
-try: exec(user_code)
-except Exception: traceback.print_exc()
-finally: sys.stdout,sys.stderr=_oldout,_olderr
-out.getvalue()+err.getvalue()
-`);
-        activeConsole.textContent=result;
-      }catch(e){ activeConsole.textContent=String(e) }
-    };
-    activeReset.onclick=()=>{
-      if(!currentId) return;
-      activeEditor.value=DEFAULTS[currentId]||'';
-      activeConsole.textContent='';
-    };
-  </script>
+  <!-- Mini JS: toast “coming soon” sur clic des cards -->
   <script>
-    const DEFAULTS={
-      print:`print(\"Hello Lulle!\")`,
-      ifelse:`x=5\\nif x>0:\\n    print(\"positive\")\\nelse:\\n    print(\"negative or zero\")`,
-      loops:`for i in range(3):\\n    print(i)`,
-      lists:`fruits=[\"apple\",\"pear\"]\\nprint(fruits[0])`,
-      funcs:`def square(x):\\n    return x*x\\nprint(square(4))`
-    };
-
-    let pyodide=null;
-    async function boot(){ pyodide=await loadPyodide({}); }
-    boot();
-
-    function setup(id){
-      const ta=document.querySelector(`#editor-${id}`);
-      ta.value=DEFAULTS[id];
-      document.querySelector(`#run-${id}`).onclick=async()=>{
-        const out=document.querySelector(`#console-${id}`);
-        out.textContent='';
-        try{
-          pyodide.globals.set('user_code',ta.value);
-          const result=await pyodide.runPythonAsync(`\\nimport sys,io,traceback\\nout=io.StringIO();err=io.StringIO()\\n_oldout,_olderr=sys.stdout,sys.stderr\\nsys.stdout,sys.stderr=out,err\\ntry: exec(user_code)\\nexcept Exception: traceback.print_exc()\\nfinally: sys.stdout,sys.stderr=_oldout,_olderr\\nout.getvalue()+err.getvalue()\\n`);
-          out.textContent=result;
-        }catch(e){out.textContent=e}
-      };
-      document.querySelector(`#reset-${id}`).onclick=()=>{
-        ta.value=DEFAULTS[id];
-        document.querySelector(`#console-${id}`).textContent='';
-      };
-    }
-
-    ['print','ifelse','loops','lists','funcs'].forEach(setup);
-
-    // Lessons: expand card in-place with the frame's pane
-    const cards=document.querySelectorAll('.lesson-card');
-    let expandedCard=null, expandedPane=null, expandedFrame=null;
-
-    function collapse(){
-      if(expandedCard && expandedPane && expandedFrame){
-        expandedCard.classList.remove('expanded');
-        expandedFrame.appendChild(expandedPane); // put pane back
-        expandedCard=null; expandedPane=null; expandedFrame=null;
+    let toastEl=null, toastTimer=null;
+    function showToast(msg="Lesson coming soon ✨"){
+      if(!toastEl){
+        toastEl=document.createElement('div');
+        toastEl.className='toast';
+        document.body.appendChild(toastEl);
       }
+      toastEl.textContent=msg;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer=setTimeout(()=> toastEl.classList.remove('show'), 1400);
     }
-
-    cards.forEach(card=>{
-      card.addEventListener('click',()=>{
-        const tab=card.dataset.tab;
-        const frame=document.querySelector(`#frame-${tab}`);
-        if(!frame) return;
-        const pane=frame.querySelector('.pane');
-        if(!pane) return;
-        // toggle if same card
-        if(expandedCard===card){ collapse(); return; }
-        // collapse other if any
-        collapse();
-        // expand this
-        card.classList.add('expanded');
-        card.appendChild(pane);
-        expandedCard=card; expandedPane=pane; expandedFrame=frame;
-        card.scrollIntoView({behavior:'smooth', block:'start'});
-      });
+    document.querySelectorAll('.lesson-card').forEach(card=>{
+      card.addEventListener('click',()=> showToast());
     });
 
-    // Logo spin on click
-    const logoEl=document.querySelector('header img');
-    if(logoEl){
-      logoEl.addEventListener('click',()=>{
-        logoEl.classList.remove('logo-spin');
-        void logoEl.offsetWidth;
-        logoEl.classList.add('logo-spin');
-      });
-    }
+    const libellule = document.querySelector('.libellule');
+    libellule.addEventListener('click', () => {
+      libellule.classList.add('fast');
+      setTimeout(() => libellule.classList.remove('fast'), 2500); // 2.5s de boost
+    });
+
   </script>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-

@@ -1,0 +1,104 @@
+/* Libellule bien symétrique */
+.libellule{
+  position:relative; width:140px; height:110px;
+  margin-right:16px;  /* espace avant "LULLE" */
+}
+.libellule *{ box-sizing:border-box; }
+
+.wing{ z-index:1; } 
+.libellule .body{ z-index:2; } 
+.libellule .head{ z-index:3; }
+
+/* Corps */
+.libellule .body{
+  position:absolute; left:50%; top:30%;
+  width:14px; height:60px; transform:translateX(-50%);
+  background:linear-gradient(#0f172a,#1e293b); border-radius:10px;
+}
+.libellule .body::before{
+  content:""; position:absolute; top:-24px; left:50%;
+  width:32px; height:32px; transform:translateX(-50%);
+  background:linear-gradient(135deg,#2dd4bf,#06b6d4); border-radius:50%;
+  box-shadow:0 6px 12px rgba(0,0,0,.2);
+}
+.libellule .head{
+  position:absolute; left:50%; top:-8px;
+  width:24px; height:24px; transform:translateX(-50%);
+  background:#111; border-radius:50%;
+}
+.libellule .head::before,.libellule .head::after{
+  content:""; position:absolute; top:6px; width:6px; height:6px;
+  background:#a7f3d0; border-radius:50%;
+}
+.libellule .head::before{ left:4px } 
+.libellule .head::after{ right:4px }
+
+/* Ailes */
+.wing{
+  position:absolute; width:90px; height:34px;
+  background:rgba(255,255,255,.4);
+  border:1px solid #94a3b8;
+  border-radius:90px/34px;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.15));
+  animation:flap 1.4s ease-in-out infinite;
+  opacity:0.9;
+}
+
+/* Gauche */
+.wing.left.top{
+  left:50%; top:12%;
+  transform:translateX(-100%) rotate(-20deg);
+  transform-origin:right center;
+  animation:flap-left 1.4s ease-in-out infinite;
+}
+.wing.left.bottom{
+  left:50%; top:46%;
+  transform:translateX(-100%) rotate(0deg);
+  transform-origin:right center;
+  animation:flap-left 1.4s ease-in-out infinite;
+}
+
+/* Droite */
+.wing.right.top{
+  left:50%; top:12%;
+  transform:rotate(20deg);
+  transform-origin:left center;
+  animation:flap-right 1.4s ease-in-out infinite;
+}
+.wing.right.bottom{
+  left:50%; top:46%;
+  transform:rotate(0deg);
+  transform-origin:left center;
+  animation:flap-right 1.4s ease-in-out infinite;
+}
+
+/* Animations miroir */
+@keyframes flap-right {
+  0%,100% { transform: rotate(var(--base,0deg)); }
+  50%     { transform: rotate(calc(var(--base,0deg) + 15deg)); }
+}
+
+@keyframes flap-left {
+  0%,100% { transform: translateX(-100%) rotate(var(--base,0deg)); }
+  50%     { transform: translateX(-100%) rotate(calc(var(--base,0deg) - 15deg)); }
+}
+
+/* Mode rapide */
+.libellule.fast .wing.left.top,
+.libellule.fast .wing.left.bottom {
+  animation: flap-left 0.4s ease-in-out infinite;
+}
+.libellule.fast .wing.right.top,
+.libellule.fast .wing.right.bottom {
+  animation: flap-right 0.4s ease-in-out infinite;
+}
+
+.libellule {
+  position:relative;
+  width:140px;
+  height:110px;
+  margin-right:16px;
+  cursor:pointer; /* 👈 ajoute cette ligne */
+}
+
+
