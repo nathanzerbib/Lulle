@@ -17,7 +17,7 @@ header{
   background:var(--bg); position:sticky; top:0; z-index:10;
 }
 .brand {
-  font-weight:100;        /* normal (au lieu de 800) */
+  font-weight:400;        /* normal (au lieu de 800) */
   font-size:5rem;         /* plus gros (2rem → 3rem) */
   letter-spacing:0.55rem; /* tu peux élargir si tu veux encore plus d'espace */
 }
