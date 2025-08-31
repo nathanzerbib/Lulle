@@ -18,6 +18,7 @@
   <link rel="icon" type="image/png" href="assets/logo.png" />
 
 </head>
+
 <body>
 <header>
   <div class="libellule">
@@ -34,54 +35,134 @@
 
   <section class="lessons">
     <div class="lesson-card" data-id="print">
-      <div class="title">print()</div>
+      <div class="title">PRINT</div>
       <div class="hint">Display text & variables</div>
     </div>
     <div class="lesson-card" data-id="ifelse">
-      <div class="title">if / else</div>
+      <div class="title">IF & ELSE</div>
       <div class="hint">Conditions & indentation</div>
     </div>
     <div class="lesson-card" data-id="loops">
-      <div class="title">loops</div>
-      <div class="hint">for & while basics</div>
+      <div class="title">LOOP</div>
+      <div class="hint">For & While Basics</div>
     </div>
     <div class="lesson-card" data-id="lists">
-      <div class="title">lists & dicts</div>
-      <div class="hint">collections & key/value</div>
+      <div class="title">LIST</div>
+      <div class="hint">Collections & Key/Value</div>
     </div>
     <div class="lesson-card" data-id="funcs">
-      <div class="title">functions</div>
-      <div class="hint">def, params, return</div>
+      <div class="title">FUNCTION</div>
+      <div class="hint">Def - Params - Return</div>
     </div>
   </section>
 
+<!-- Workspace (cachée par défaut) -->
+<section class="workspace" id="workspace" hidden>
+  <div class="workspace-topbar">
+    <button id="backBtn" class="back">← Back</button>
+    <div class="lesson-title" id="lessonTitle">Lesson</div>
+  </div>
+
+  <div class="split">
+    <div class="pane editor-pane">
+      <div class="pane-title">Editor</div>
+      <textarea id="editor" spellcheck="false" placeholder="# Write your code here
+print('Hello Lulle')"></textarea>
+      <div class="actions">
+        <button id="runBtn" class="run">Run ▶︎</button>
+      </div>
+    </div>
+
+    <div class="pane console-pane">
+      <div class="pane-title">Console</div>
+      <pre id="console" class="console-output">Ready.</pre>
+    </div>
+  </div>
+</section>
+
+
   <footer>Lulle · Learn the basics of Python</footer>
 
-  <!-- Mini JS: toast “coming soon” sur clic des cards -->
   <script>
-    let toastEl=null, toastTimer=null;
-    function showToast(msg="Lesson coming soon ✨"){
-      if(!toastEl){
-        toastEl=document.createElement('div');
-        toastEl.className='toast';
-        document.body.appendChild(toastEl);
-      }
-      toastEl.textContent=msg;
-      toastEl.classList.add('show');
-      clearTimeout(toastTimer);
-      toastTimer=setTimeout(()=> toastEl.classList.remove('show'), 1400);
+  // --- Toast (tu peux garder si tu veux)
+  let toastEl=null, toastTimer=null;
+  function showToast(msg="Lesson coming soon ✨"){
+    if(!toastEl){
+      toastEl=document.createElement('div');
+      toastEl.className='toast';
+      document.body.appendChild(toastEl);
     }
-    document.querySelectorAll('.lesson-card').forEach(card=>{
-      card.addEventListener('click',()=> showToast());
-    });
+    toastEl.textContent=msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(()=> toastEl.classList.remove('show'), 1400);
+  }
 
-    const libellule = document.querySelector('.libellule');
-    libellule.addEventListener('click', () => {
-      libellule.classList.add('fast');
-      setTimeout(() => libellule.classList.remove('fast'), 2500); // 2.5s de boost
-    });
+  // --- Sélecteurs
+  const lessonsSection = document.querySelector('.lessons');
+  const workspace      = document.getElementById('workspace');
+  const backBtn        = document.getElementById('backBtn');
+  const lessonTitleEl  = document.getElementById('lessonTitle');
+  const editorEl       = document.getElementById('editor');
+  const consoleEl      = document.getElementById('console');
+  const runBtn         = document.getElementById('runBtn');
 
-  </script>
+  // Ouvre la workspace quand on clique une card
+  document.querySelectorAll('.lesson-card').forEach(card=>{
+    card.addEventListener('click', () => {
+      const id    = card.getAttribute('data-id');
+      const title = card.querySelector('.title')?.textContent || id;
+
+      // Title en haut
+      lessonTitleEl.textContent = title.toUpperCase();
+
+      // (Optionnel) pré-remplir l'éditeur selon la leçon
+      const snippets = {
+        print: "print('Hello Lulle')",
+        ifelse: "x = 3\nif x % 2 == 0:\n    print('even')\nelse:\n    print('odd')",
+        loops: "for i in range(3):\n    print('i =', i)",
+        lists: "nums = [1,2,3]\nprint(sum(nums))",
+        funcs: "def add(a,b):\n    return a+b\nprint(add(2,3))",
+      };
+      editorEl.value = snippets[id] || "# Write your code here\nprint('Hello Lulle')";
+
+      // Bascule vue
+      lessonsSection.setAttribute('hidden','');
+      workspace.removeAttribute('hidden');
+      window.scrollTo({top:0, behavior:'instant'});
+    });
+  });
+
+  // Bouton back
+  backBtn.addEventListener('click', () => {
+    workspace.setAttribute('hidden','');
+    lessonsSection.removeAttribute('hidden');
+  });
+
+  // "Exécution" très simple : ne gère que print("...") pour la démo
+  runBtn.addEventListener('click', () => {
+    const code = editorEl.value;
+    const lines = code.split(/\r?\n/);
+    const outputs = [];
+
+    // ultra minimal: attrape print("...") ou print('...')
+    const printRe = /^\s*print\s*\(\s*(['"])([\s\S]*?)\1\s*\)\s*$/;
+
+    for(const ln of lines){
+      const m = ln.match(printRe);
+      if(m){ outputs.push(m[2]); }
+    }
+    consoleEl.textContent = outputs.length ? outputs.join("\n")
+                                           : "⚠️ Demo runner: only simple print('...') lines are shown.";
+  });
+
+  // --- Ta libellule (inchangé)
+  const libellule = document.querySelector('.libellule');
+  libellule.addEventListener('click', () => {
+    libellule.classList.add('fast');
+    setTimeout(() => libellule.classList.remove('fast'), 2500);
+  });
+</script>
 
 </body>
 </html>

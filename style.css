@@ -17,7 +17,7 @@ header{
   background:var(--bg); position:sticky; top:0; z-index:10;
 }
 .brand {
-  font-weight:300;        /* normal (au lieu de 800) */
+  font-weight:100;        /* normal (au lieu de 800) */
   font-size:5rem;         /* plus gros (2rem → 3rem) */
   letter-spacing:0.55rem; /* tu peux élargir si tu veux encore plus d'espace */
 }
@@ -58,4 +58,75 @@ header{
 footer{
   padding:20px; text-align:center; font-size:.9rem;
   color:var(--muted); border-top:1px solid var(--line)
+}
+
+body, header {
+  background: #f0f0f0;   /* gris clair uniforme */
+  transition: background 0.3s ease;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* centre le contenu global */
+  position: relative;      /* permet de placer la libellule */
+  height: 120px;            /* ajuste la hauteur si besoin */
+}
+
+/* libellule collée à gauche */
+header .libellule {
+  position: absolute;
+  left: 350px;              /* marge gauche */
+  top: 60%;
+  transform: translateY(-50%); /* centre verticalement */
+}
+
+/* on garde la brand telle qu’elle est (ta config actuelle),
+   rien à changer ici sauf si tu veux la recentrer finement */
+
+
+/*----------------------------------------------------------
+
+/* Cache/affiche les sections */
+.lessons[hidden], .workspace[hidden] { display: none !important; }
+
+/* Topbar workspace */
+.workspace .workspace-topbar{
+  display:flex; align-items:center; justify-content:center;
+  gap:12px; padding:12px 16px;
+}
+.workspace .workspace-topbar .back{
+  position:absolute; left:16px;
+  padding:6px 10px; border-radius:8px; border:1px solid #ddd; cursor:pointer; background:#fff;
+}
+.workspace .lesson-title{ font-size:1.1rem; letter-spacing:.35rem; }
+
+/* Split panes */
+.workspace .split{
+  display:grid; grid-template-columns: 1fr 1fr; gap:16px;
+  padding: 0 16px 16px;
+}
+.pane{
+  background:#fff; border:1px solid #e6e6e6; border-radius:12px;
+  box-shadow:0 6px 18px rgba(0,0,0,.06);
+  display:flex; flex-direction:column; min-height:60vh;
+}
+.pane-title{
+  font-size:.9rem; opacity:.7; padding:10px 12px; border-bottom:1px solid #eee;
+}
+#editor{
+  flex:1; resize:none; border:0; outline:0; font:14px/1.5 Menlo, Monaco, Consolas, monospace;
+  padding:12px; background:#fafafa; border-radius:0 0 12px 12px;
+}
+.actions{ padding:10px 12px; border-top:1px solid #eee; background:#fff; }
+.actions .run{ padding:8px 12px; border-radius:8px; border:1px solid #ddd; cursor:pointer; background:#fff; }
+
+.console-output{
+  flex:1; margin:0; padding:12px; background:#0f172a; color:#e5e7eb;
+  border-radius:0 0 12px 12px; overflow:auto; font:13px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* Responsive */
+@media (max-width: 900px){
+  .workspace .split{ grid-template-columns: 1fr; }
 }
